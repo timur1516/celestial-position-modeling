@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 15rem;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #053a5f;
+    height: 20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #5cd5eb;
+    height: 20px;
+    width: 40px;
+}
+
+body {
+    background-color: black;
+    color: white;
+    font-family: Comic Sans MS, cursive;
+    font-size: 16px;
+}
+
+.speedControl {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.speedControl div {
+    /*background-color: lightgray;*/
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.animationSpeedBlock {
+    font-size: 1.5rem;
+}
+
+.mainControl {
+    gap: 5px;
+}
+
+.mainControl input[type="button"] {
+    font: inherit;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.modePanel{
+    position: absolute;
+}
+
+.realTime{
+    gap: 5px;
+}
+
+.year {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.month-day-time{
+    display: flex;
+    flex-direction: column;
+}
+
+.month-day {
+    font-size: 1.2rem;
+    display: flex;
+    gap: 5px;
+}
+
+.month-day span {
+    letter-spacing: 1px;
+}
+
+.time {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    color: #00aaff;
+}
