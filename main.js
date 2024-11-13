@@ -50,18 +50,6 @@ const sunSphere = new THREE.Mesh(sunSphereGeometry, sunSphereMaterial);
 sunSphere.rotation.x = Math.PI / 2;
 scene.add(sunSphere);
 
-// Создание плоскости XY
-// const planeSize = 50;
-// const planeGeometry = new THREE.PlaneGeometry(planeSize, planeSize);
-// const planeMaterial = new THREE.MeshBasicMaterial({
-//     color: 0x0077ff,
-//     side: THREE.DoubleSide,
-//     transparent: true,
-//     opacity: 0.3
-// });
-// const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-// scene.add(plane);
-
 // Устанавливаем положение камеры
 camera.position.z = 10;
 camera.position.x = 5;
@@ -74,6 +62,8 @@ controls.dampingFactor = 0.05; // Коэффициент демпфирован�
 controls.enablePan = false;
 
 let sun = new Sun();
+
+let eclipticOrbit = generateEclipticOrbit();
 
 let speedK = 0;
 
@@ -109,6 +99,7 @@ function redrawObjects() {
 }
 
 function displaySunAroundEarth() {
+    scene.remove(eclipticOrbit);
     let p = sun.rectangularHorizontalCoordinates;
     earthSphere.position.set(0, 0, 0);
     sunSphere.position.set(p.x * 10, p.y * 10, p.z * 10);
@@ -116,6 +107,7 @@ function displaySunAroundEarth() {
 }
 
 function displayEarthAroundSun() {
+    scene.add(eclipticOrbit);
     let p = sun.rectangularEclipticCoordinates;
     earthSphere.position.set(p.x * 10, p.y * 10, p.z * 10)
     sunSphere.position.set(0, 0, 0);
@@ -140,22 +132,29 @@ document.getElementsByName("modeRadio").forEach(modeRadio => {
 
 function formatTime(seconds) {
     const secondsInMinute = 60;
-    const secondsInHour = 3600;
-    const secondsInDay = 86400;
+    const secondsInHour = 60 * 60;
+    const secondsInDay = 60 * 60 * 24;
+    const secondsInMonth = 60 * 60 * 24 * 30;
+    const secondsInYear = 60 * 60 * 24 * 365;
 
     if (seconds < secondsInHour) {
-        // Форматируем в минуты
         let minutes = seconds / secondsInMinute;
         return minutes.toFixed(2) + " минут";
     }
     if (seconds < secondsInDay) {
-        // Форматируем в часы
         let hours = seconds / secondsInHour;
         return hours.toFixed(2) + " часов";
     }
-    // Форматируем в дни
-    let days = seconds / secondsInDay;
-    return days.toFixed(2) + " дней";
+    if (seconds < secondsInMonth) {
+        let days = seconds / secondsInDay;
+        return days.toFixed(2) + " дней";
+    }
+    if (seconds < secondsInYear) {
+        let months = seconds / secondsInMonth;
+        return months.toFixed(2) + " месяцев";
+    }
+    let years = seconds / secondsInYear;
+    return years.toFixed(2) + " лет";
 }
 
 const range = document.getElementById("speedRange");
@@ -164,6 +163,18 @@ range.addEventListener("input", () => {
     updateSpeedK();
     IS_ANIMATION = true;
 });
+
+function generateEclipticOrbit() {
+    let eclipticOrbitPoints = [];
+    for (let i = 0; i < 367; i++) {
+        let coordinates = sun.rectangularEclipticCoordinates;
+        eclipticOrbitPoints.push(new THREE.Vector3(coordinates.x * 10, coordinates.y * 10, coordinates.z * 10));
+        sun.T.setDate(sun.T.getDate() + 1);
+    }
+    material = new THREE.LineBasicMaterial({color: 0xFF0000});
+    geometry = new THREE.BufferGeometry().setFromPoints(eclipticOrbitPoints);
+    return new THREE.Line(geometry, material);
+}
 
 function updateSpeedK(){
     switch (mode) {
