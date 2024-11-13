@@ -1,8 +1,8 @@
 class Sun {
-    #T = new Date();
-    #offset = new Date().getTimezoneOffset() / 60;
-    #latitude = 0;
-    #longitude = 0;
+    #T;
+    #offset;
+    #latitude;
+    #longitude;
 
     #UT;            // Время по Гринвичу в часах
     #d;             // Кол-во дней с 0,0 TDT января 2000 года
@@ -29,6 +29,17 @@ class Sun {
 
     #xHorizontal; #yHorizontal;  #zHorizontal;      // Горизонтальные прямоугольные координаты
     #azimuth; #altitude                             // Азимут и высота
+
+    constructor(T = new Date(), offset = new Date().getTimezoneOffset() / 60, latitude = 0, longitude = 0) {
+        this.#T = T;
+        this.#offset = offset;
+        this.#latitude = latitude;
+        this.#longitude = longitude;
+    }
+
+    clone() {
+        return new Sun(new Date(this.#T), this.#offset, this.#latitude, this.#longitude);
+    }
 
     // Приводит значение в градусах в промежуток от 0 до 360
     #rev(x, d) {

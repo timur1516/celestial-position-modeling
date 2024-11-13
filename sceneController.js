@@ -2,11 +2,11 @@ function updateScene() {
     switch (mode) {
         case viewModes.SUN_AROUND_EARTH:
             displaySunAroundEarth();
-            displayObserver();
+            displayHorizontalOrbit();
             displayHorizontalOrbitData();
             displayOnEarthPositionChooser();
+            displayObserver();
 
-            hideObserver();
             hideEclipticOrbit();
             hideEclipticOrbitData();
             break;
@@ -15,9 +15,10 @@ function updateScene() {
             displayEclipticOrbit();
             displayEclipticOrbitData();
 
-            hideObserver();
+            hideHorizontalOrbit();
             hideHorizontalOrbitData();
             hideOnEarthPositionChooser();
+            hideObserver();
             break;
     }
 }
@@ -80,7 +81,15 @@ function displayEclipticOrbitData() {
 }
 
 function displayEclipticOrbit() {
+    scene.remove(eclipticOrbit);
+    eclipticOrbit = generateEclipticOrbit(sun);
     scene.add(eclipticOrbit);
+}
+
+function displayHorizontalOrbit(){
+    scene.remove(horizontalOrbit);
+    horizontalOrbit = generateHorizontalOrbit(sun);
+    scene.add(horizontalOrbit);
 }
 
 function displayOnEarthPositionChooser() {
@@ -105,4 +114,8 @@ function hideObserver() {
 
 function hideEclipticOrbit() {
     scene.remove(eclipticOrbit);
+}
+
+function hideHorizontalOrbit() {
+    scene.remove(horizontalOrbit);
 }

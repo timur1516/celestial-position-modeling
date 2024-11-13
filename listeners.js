@@ -19,20 +19,23 @@ timeSpeedRange.addEventListener("input", () => {
 });
 
 longitudeRange.addEventListener("input", () => {
-    sun.longitude = longitudeRange.value;
     document.getElementById('lonValue').textContent = longitudeRange.value + '°';
-    displaySunAroundEarth();
+    sun.longitude = longitudeRange.value;
+    updateScene();
+    updateStatistics();
 });
 
 document.getElementById("lat").addEventListener("input", () => {
-    sun.latitude = latitudeRange.value;
     document.getElementById('latValue').textContent = latitudeRange.value + '°';
-    displaySunAroundEarth();
+    sun.latitude = latitudeRange.value;
+    updateScene();
+    updateStatistics();
 });
 
 timezoneSelect.addEventListener("change", () => {
     sun.offset = timezoneSelect.value;
-    displaySunAroundEarth();
+    updateScene();
+    updateStatistics();
 });
 
 document.getElementById("toRealTimeButton").addEventListener("click", toRealTime);

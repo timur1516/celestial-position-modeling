@@ -48,15 +48,28 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.enablePan = false;
 //----------------------------------------------------------------------------------------------------------------------------------
-function generateEclipticOrbit() {
-    const sun = new Sun();
+function generateEclipticOrbit(sun) {
+    let tmpSun = sun.clone();
     let eclipticOrbitPoints = [];
     for (let i = 0; i < 367; i++) {
-        let coordinates = sun.rectangularEclipticCoordinates;
+        let coordinates = tmpSun.rectangularEclipticCoordinates;
         eclipticOrbitPoints.push(new THREE.Vector3(coordinates.x * 10, coordinates.y * 10, coordinates.z * 10));
-        sun.T.setDate(sun.T.getDate() + 1);
+        tmpSun.T.setDate(tmpSun.T.getDate() + 1);
     }
     let material = new THREE.LineBasicMaterial({color: 0xFF0000});
     let geometry = new THREE.BufferGeometry().setFromPoints(eclipticOrbitPoints);
+    return new THREE.Line(geometry, material);
+}
+
+function generateHorizontalOrbit(sun) {
+    let tmpSun = sun.clone();
+    let horizontalOrbitPoints = [];
+    for (let i = 0; i < 24 * 60; i++) {
+        let coordinates = tmpSun.rectangularHorizontalCoordinates;
+        horizontalOrbitPoints.push(new THREE.Vector3(coordinates.x * 10, coordinates.y * 10, coordinates.z * 10));
+        tmpSun.T.setMinutes(tmpSun.T.getMinutes() + 1);
+    }
+    let material = new THREE.LineBasicMaterial({color: 0xFF0000});
+    let geometry = new THREE.BufferGeometry().setFromPoints(horizontalOrbitPoints);
     return new THREE.Line(geometry, material);
 }

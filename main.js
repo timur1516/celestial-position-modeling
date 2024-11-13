@@ -1,5 +1,7 @@
 const sun = new Sun();
-const eclipticOrbit = generateEclipticOrbit(sun);
+
+let eclipticOrbit = generateEclipticOrbit(sun);
+let horizontalOrbit = generateHorizontalOrbit(sun);
 
 let speedK = 0;
 let mode = viewModes.SUN_AROUND_EARTH;
