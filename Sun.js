@@ -1,6 +1,6 @@
 class Sun {
     #T = new Date();
-    #offset = 0;
+    #offset = new Date().getTimezoneOffset() / 60;
     #latitude = 0;
     #longitude = 0;
 
