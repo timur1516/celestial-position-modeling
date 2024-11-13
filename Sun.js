@@ -1,8 +1,8 @@
 class Sun {
     #T = new Date();
     #offset = 0;
-    #latitude = 55;
-    #longitude = 37;
+    #latitude = 0;
+    #longitude = 0;
 
     #UT;            // Время по Гринвичу в часах
     #d;             // Кол-во дней с 0,0 TDT января 2000 года

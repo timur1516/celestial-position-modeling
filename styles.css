@@ -8,7 +8,7 @@ input[type="range"] {
     appearance: none;
     background: transparent;
     cursor: pointer;
-    width: 15rem;
+    width: 100%;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
@@ -61,7 +61,7 @@ body {
     border-radius: 5px;
 }
 
-.orbitData{
+.orbitData {
     position: absolute;
     right: 10px;
     margin: 10px;
@@ -71,36 +71,48 @@ body {
     gap: 5px;
 }
 
-.orbitData div{
+.orbitData div {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
 }
 
-table{
+table {
     border-collapse: collapse;
     text-align: center;
 }
 
-td, th{
+td, th {
     padding: 5px;
     border: 1px solid white;
 }
 
-td{
+td {
     width: 80px;
 }
 
-.modePanel{
+.menuPanel {
     position: absolute;
     margin: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    width: 250px;
 }
 
-.realTime{
+select{
+    width: 100%;
+}
+
+.positionChooser {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.realTime {
     gap: 5px;
 }
 
@@ -109,7 +121,7 @@ td{
     font-weight: bold;
 }
 
-.month-day-time{
+.month-day-time {
     display: flex;
     flex-direction: column;
 }
@@ -122,6 +134,14 @@ td{
 
 .month-day span {
     letter-spacing: 1px;
+}
+
+#day {
+    width: 30px;
+}
+
+#month {
+    width: 50px;
 }
 
 .time {

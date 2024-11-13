@@ -30,9 +30,9 @@ scene.add(axesHelper);
 
 const size = 10;
 const divisions = 10;
-const gridHelper = new THREE.GridHelper( size, divisions );
+const gridHelper = new THREE.GridHelper(size, divisions);
 gridHelper.rotateX(Math.PI / 2);
-scene.add( gridHelper );
+scene.add(gridHelper);
 
 // Земля
 const earthTexture = textureLoader.load("2k_earth_daymap.jpg");
@@ -49,6 +49,14 @@ const sunSphereMaterial = new THREE.MeshBasicMaterial({map: sunTexture});
 const sunSphere = new THREE.Mesh(sunSphereGeometry, sunSphereMaterial);
 sunSphere.rotation.x = Math.PI / 2;
 scene.add(sunSphere);
+
+//Наблюдатель на поверхности земли
+const observerSphereGeometry = new THREE.SphereGeometry(0.05, 32, 32);
+const observerSphereMaterial = new THREE.MeshBasicMaterial({
+    color: 0xff0000,
+    side: THREE.DoubleSide
+});
+const observerSphere = new THREE.Mesh(observerSphereGeometry, observerSphereMaterial);
 
 // Устанавливаем положение камеры
 camera.position.z = 10;
@@ -100,8 +108,10 @@ function redrawObjects() {
 
 function displaySunAroundEarth() {
     scene.remove(eclipticOrbit);
+    displayObserver();
     document.querySelector('.eclipticOrbitData').style.display = 'none';
     document.querySelector('.horizontalOrbitData').style.display = 'flex';
+    document.querySelector('.positionChooser').style.display = 'flex';
     let p = sun.rectangularHorizontalCoordinates;
     sun.horizontalCoordinates;
     earthSphere.position.set(0, 0, 0);
@@ -111,12 +121,22 @@ function displaySunAroundEarth() {
 
 function displayEarthAroundSun() {
     scene.add(eclipticOrbit);
+    scene.remove(observerSphere);
     document.querySelector('.eclipticOrbitData').style.display = 'flex';
     document.querySelector('.horizontalOrbitData').style.display = 'none';
+    document.querySelector('.positionChooser').style.display = 'none';
     let p = sun.rectangularEclipticCoordinates;
     earthSphere.position.set(p.x * 10, p.y * 10, p.z * 10)
     sunSphere.position.set(0, 0, 0);
     sun.T.setSeconds((sun.T.getSeconds() + speedK));
+}
+
+function displayObserver() {
+    scene.add(observerSphere);
+    const x = Math.cos(sun.latitude * DEGRAD) * Math.cos(sun.longitude * DEGRAD);
+    const y = Math.cos(sun.latitude * DEGRAD) * Math.sin(sun.longitude * DEGRAD);
+    const z = Math.sin(sun.latitude * DEGRAD);
+    observerSphere.position.set(x, y, z);
 }
 
 function formatNumber(value) {
@@ -126,7 +146,7 @@ function formatNumber(value) {
 function updateStatistics() {
     document.getElementById("year").textContent = sun.T.getFullYear();
     document.getElementById("day").textContent = sun.T.getDate();
-    document.getElementById("month").textContent = sun.T.toLocaleString('default', { month: 'short' }).slice(0, -1).toUpperCase();
+    document.getElementById("month").textContent = sun.T.toLocaleString('default', {month: 'short'}).slice(0, -1).toUpperCase();
     document.getElementById("time").textContent = sun.T.toLocaleString().slice(12, 17);
 
     document.getElementById('days').textContent = formatNumber(sun.d);
@@ -193,6 +213,27 @@ range.addEventListener("input", () => {
     IS_ANIMATION = true;
 });
 
+const lonRange = document.getElementById("lon");
+const latRange = document.getElementById("lat");
+
+lonRange.addEventListener("input", () => {
+    sun.longitude = lonRange.value;
+    document.getElementById('lonValue').textContent = lonRange.value + '°';
+    displaySunAroundEarth();
+});
+
+document.getElementById("lat").addEventListener("input", () => {
+    sun.latitude = latRange.value;
+    document.getElementById('latValue').textContent = latRange.value + '°';
+    displaySunAroundEarth();
+});
+
+const timezoneSelect = document.getElementById("timezone");
+timezoneSelect.addEventListener("change", () => {
+    sun.offset = timezoneSelect.value;
+    displaySunAroundEarth();
+})
+
 function generateEclipticOrbit() {
     let eclipticOrbitPoints = [];
     for (let i = 0; i < 367; i++) {
@@ -205,14 +246,14 @@ function generateEclipticOrbit() {
     return new THREE.Line(geometry, material);
 }
 
-function updateSpeedK(){
+function updateSpeedK() {
     switch (mode) {
         case viewModes.SUN_AROUND_EARTH:
-            speedK = Number(range.value) * ((60*60*24*frameInterval)/(1000*400));
+            speedK = Number(range.value) * ((60 * 60 * 24 * frameInterval) / (1000 * 400));
 
             break;
         case viewModes.EARTH_AROUND_SUN:
-            speedK = Number(range.value) * ((60*60*24*365*frameInterval)/(1000*400));
+            speedK = Number(range.value) * ((60 * 60 * 24 * 365 * frameInterval) / (1000 * 400));
             break;
     }
     document.getElementById("animationSpeed").textContent =
@@ -221,7 +262,7 @@ function updateSpeedK(){
 
 document.getElementById("toRealTimeButton").addEventListener("click", toRealTime);
 
-function toRealTime(){
+function toRealTime() {
     sun.T = new Date();
     range.value = 0;
     IS_ANIMATION = false;
@@ -230,7 +271,7 @@ function toRealTime(){
 }
 
 document.getElementById("startAnimation").addEventListener("click", function () {
-    if(IS_ANIMATION) return;
+    if (IS_ANIMATION) return;
     IS_ANIMATION = true;
     range.value = 50;
     updateSpeedK();
