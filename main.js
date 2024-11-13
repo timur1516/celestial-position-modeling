@@ -100,7 +100,10 @@ function redrawObjects() {
 
 function displaySunAroundEarth() {
     scene.remove(eclipticOrbit);
+    document.querySelector('.eclipticOrbitData').style.display = 'none';
+    document.querySelector('.horizontalOrbitData').style.display = 'flex';
     let p = sun.rectangularHorizontalCoordinates;
+    sun.horizontalCoordinates;
     earthSphere.position.set(0, 0, 0);
     sunSphere.position.set(p.x * 10, p.y * 10, p.z * 10);
     sun.T.setSeconds((sun.T.getSeconds() + speedK));
@@ -108,18 +111,44 @@ function displaySunAroundEarth() {
 
 function displayEarthAroundSun() {
     scene.add(eclipticOrbit);
+    document.querySelector('.eclipticOrbitData').style.display = 'flex';
+    document.querySelector('.horizontalOrbitData').style.display = 'none';
     let p = sun.rectangularEclipticCoordinates;
     earthSphere.position.set(p.x * 10, p.y * 10, p.z * 10)
     sunSphere.position.set(0, 0, 0);
     sun.T.setSeconds((sun.T.getSeconds() + speedK));
 }
 
+function formatNumber(value) {
+    return value !== undefined ? value.toFixed(2) : "N/A";
+}
+
 function updateStatistics() {
-    console.log(sun.T.getYear());
     document.getElementById("year").textContent = sun.T.getFullYear();
     document.getElementById("day").textContent = sun.T.getDate();
     document.getElementById("month").textContent = sun.T.toLocaleString('default', { month: 'short' }).slice(0, -1).toUpperCase();
     document.getElementById("time").textContent = sun.T.toLocaleString().slice(12, 17);
+
+    document.getElementById('days').textContent = formatNumber(sun.d);
+    document.getElementById('longitude').textContent = formatNumber(sun.w);
+    document.getElementById('distance').textContent = formatNumber(sun.a);
+    document.getElementById('eccentricity').textContent = formatNumber(sun.e);
+    document.getElementById('meanAnomaly').textContent = formatNumber(sun.M);
+    document.getElementById('inclination').textContent = formatNumber(sun.oblecl);
+    document.getElementById('meanLongitude').textContent = formatNumber(sun.L);
+    document.getElementById('eccentricAnomaly').textContent = formatNumber(sun.E);
+
+    document.getElementById('xInPlaneOfEcliptic').textContent = formatNumber(sun.xInPlaneOfEcliptic);
+    document.getElementById('yInPlaneOfEcliptic').textContent = formatNumber(sun.yInPlaneOfEcliptic);
+    document.getElementById('helioDistance').textContent = formatNumber(sun.r);
+    document.getElementById('eclipticLongitude').textContent = formatNumber(sun.lon);
+    document.getElementById('trueAnomaly').textContent = formatNumber(sun.v);
+
+    document.getElementById('xHorizontal').textContent = formatNumber(sun.xHorizontal);
+    document.getElementById('yHorizontal').textContent = formatNumber(sun.yHorizontal);
+    document.getElementById('zHorizontal').textContent = formatNumber(sun.zHorizontal);
+    document.getElementById('azimuth').textContent = formatNumber(sun.azimuth);
+    document.getElementById('altitude').textContent = formatNumber(sun.altitude);
 }
 
 document.getElementsByName("modeRadio").forEach(modeRadio => {

@@ -167,4 +167,76 @@ class Sun {
     get longitude() {
         return this.#longitude;
     }
+
+    get d() {
+        return this.#d;
+    }
+
+    get w() {
+        return this.#w;
+    }
+
+    get a() {
+        return this.#a;
+    }
+
+    get e() {
+        return this.#e;
+    }
+
+    get M() {
+        return this.#M;
+    }
+
+    get oblecl() {
+        return this.#oblecl;
+    }
+
+    get L() {
+        return this.#L;
+    }
+
+    get E() {
+        return this.#E;
+    }
+
+    get xInPlaneOfEcliptic() {
+        return this.#xInPlaneOfEcliptic;
+    }
+
+    get yInPlaneOfEcliptic() {
+        return this.#yInPlaneOfEcliptic;
+    }
+
+    get r() {
+        return this.#r;
+    }
+
+    get lon() {
+        return this.#lon;
+    }
+
+    get v() {
+        return this.#v;
+    }
+
+    get xHorizontal() {
+        return this.#xHorizontal;
+    }
+
+    get yHorizontal() {
+        return this.#yHorizontal;
+    }
+
+    get zHorizontal() {
+        return this.#zHorizontal;
+    }
+
+    get azimuth() {
+        return this.#azimuth;
+    }
+
+    get altitude() {
+        return this.#altitude;
+    }
 }

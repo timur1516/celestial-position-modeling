@@ -42,7 +42,6 @@ body {
 }
 
 .speedControl div {
-    /*background-color: lightgray;*/
     display: flex;
     align-items: center;
     justify-content: center
@@ -62,8 +61,43 @@ body {
     border-radius: 5px;
 }
 
+.orbitData{
+    position: absolute;
+    right: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.orbitData div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+table{
+    border-collapse: collapse;
+    text-align: center;
+}
+
+td, th{
+    padding: 5px;
+    border: 1px solid white;
+}
+
+td{
+    width: 80px;
+}
+
 .modePanel{
     position: absolute;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .realTime{

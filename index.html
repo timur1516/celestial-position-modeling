@@ -8,10 +8,15 @@
 </head>
 <body>
 <div class="modePanel">
-    <input type="radio" name="modeRadio" id="sunAroundEarthMode" value="0" checked/>
-    <label for="sunAroundEarthMode">Солнце вокруг Земли</label>
-    <input type="radio" name="modeRadio" id="earthAroundSun" value="1"/>
-    <label for="earthAroundSun">Земля вокруг Солнца</label>
+    <h3>Режим</h3>
+    <div>
+        <input type="radio" name="modeRadio" id="sunAroundEarthMode" value="0" checked/>
+        <label for="sunAroundEarthMode">Солнце вокруг Земли</label><br/>
+    </div>
+    <div>
+        <input type="radio" name="modeRadio" id="earthAroundSun" value="1"/>
+        <label for="earthAroundSun">Земля вокруг Солнца</label>
+    </div>
 </div>
 <div class="speedControl">
     <div class="realTime">
@@ -40,53 +45,101 @@
         <input type="range" min="-400" max="400" step="1" value="0" id="speedRange"/>
     </div>
 </div>
-<!--    <div class="orbitData">-->
-<!--        <h2>Solar System Data</h2>-->
-
-<!--        <div class="section">-->
-<!--            <h3>General Information</h3>-->
-<!--            <div class="data-item"><span>Date:</span> <span id="T"></span></div>-->
-<!--            <div class="data-item"><span>Offset:</span> <span id="offset">0</span></div>-->
-<!--            <div class="data-item"><span>Latitude:</span> <span id="latitude">55</span></div>-->
-<!--            <div class="data-item"><span>Longitude:</span> <span id="longitude">37</span></div>-->
-<!--        </div>-->
-
-<!--        <div class="section">-->
-<!--            <h3>Orbital Parameters</h3>-->
-<!--            <div class="data-item"><span>UT:</span> <span id="UT"></span></div>-->
-<!--            <div class="data-item"><span>Days since 2000:</span> <span id="d"></span></div>-->
-<!--            <div class="data-item"><span>Longitude of Perihelion (w):</span> <span id="w"></span></div>-->
-<!--            <div class="data-item"><span>Semi-major Axis (a):</span> <span id="a"></span></div>-->
-<!--            <div class="data-item"><span>Eccentricity (e):</span> <span id="e"></span></div>-->
-<!--            <div class="data-item"><span>Mean Anomaly (M):</span> <span id="M"></span></div>-->
-<!--            <div class="data-item highlight"><span>Obliquity of the Ecliptic:</span> <span id="oblecl"></span></div>-->
-<!--        </div>-->
-
-<!--        <div class="section">-->
-<!--            <h3>Position Data</h3>-->
-<!--            <div class="data-item"><span>Heliocentric Distance (r):</span> <span id="r"></span></div>-->
-<!--            <div class="data-item"><span>Ecliptic Longitude (lon):</span> <span id="lon"></span></div>-->
-<!--            <div class="data-item"><span>True Anomaly (v):</span> <span id="v"></span></div>-->
-<!--            <div class="data-item"><span>X (Ecliptic):</span> <span id="xEcliptic"></span></div>-->
-<!--            <div class="data-item"><span>Y (Ecliptic):</span> <span id="yEcliptic"></span></div>-->
-<!--            <div class="data-item"><span>Z (Ecliptic):</span> <span id="zEcliptic"></span></div>-->
-<!--        </div>-->
-
-<!--        <div class="section">-->
-<!--            <h3>Equatorial Coordinates</h3>-->
-<!--            <div class="data-item"><span>X (Equatorial):</span> <span id="xEquatorial"></span></div>-->
-<!--            <div class="data-item"><span>Y (Equatorial):</span> <span id="yEquatorial"></span></div>-->
-<!--            <div class="data-item"><span>Z (Equatorial):</span> <span id="zEquatorial"></span></div>-->
-<!--            <div class="data-item"><span>Right Ascension (RA):</span> <span id="RAEquatorial"></span></div>-->
-<!--            <div class="data-item"><span>Declination:</span> <span id="DeclEquatorial"></span></div>-->
-<!--        </div>-->
-
-<!--        <div class="section">-->
-<!--            <h3>Horizontal Coordinates</h3>-->
-<!--            <div class="data-item"><span>Azimuth:</span> <span id="azimuth"></span></div>-->
-<!--            <div class="data-item"><span>Altitude:</span> <span id="altitude"></span></div>-->
-<!--        </div>-->
-<!--    </div>-->
+<div class="orbitData">
+    <div class="keplerOrbitData">
+        <h3>Кеплеровы элементы орбиты</h3>
+        <table id="keplerOrbitDataTable">
+            <tbody>
+            <tr>
+                <th>Дней с 00:00 TDT января 2000 года (d)</th>
+                <td id="days"></td>
+            </tr>
+            <tr>
+                <th>Долгота перигелия (w)</th>
+                <td id="longitude"></td>
+            </tr>
+            <tr>
+                <th>Среднее расстояние, а.е. (a)</th>
+                <td id="distance"></td>
+            </tr>
+            <tr>
+                <th>Эксцентриситет (e)</th>
+                <td id="eccentricity"></td>
+            </tr>
+            <tr>
+                <th>Средняя аномалия (M)</th>
+                <td id="meanAnomaly"></td>
+            </tr>
+            <tr>
+                <th>Наклон эклиптики (oblecl)</th>
+                <td id="inclination"></td>
+            </tr>
+            <tr>
+                <th>Средняя долгота Солнца (L)</th>
+                <td id="meanLongitude"></td>
+            </tr>
+            <tr>
+                <th>Эксцентрическая аномалия (E)</th>
+                <td id="eccentricAnomaly"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="eclipticOrbitData">
+        <h3>Эклиптические элементы орбиты</h3>
+        <table id="eclipticOrbitDataTable">
+            <tbody>
+            <tr>
+                <th>Координата x в плоскости эклиптики</th>
+                <td id="xInPlaneOfEcliptic"></td>
+            </tr>
+            <tr>
+                <th>Координата y в плоскости эклиптики</th>
+                <td id="yInPlaneOfEcliptic"></td>
+            </tr>
+            <tr>
+                <th>Гелиоцентрическое расстояние</th>
+                <td id="helioDistance"></td>
+            </tr>
+            <tr>
+                <th>Долгота в эклиптических координатах</th>
+                <td id="eclipticLongitude"></td>
+            </tr>
+            <tr>
+                <th>Истинная аномалия (v)</th>
+                <td id="trueAnomaly"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="horizontalOrbitData">
+        <h3>Горизонтальные элементы орбиты</h3>
+        <table id="horizontalOrbitDataTable">
+            <tbody>
+            <tr>
+                <th>Горизонтальная координата x</th>
+                <td id="xHorizontal"></td>
+            </tr>
+            <tr>
+                <th>Горизонтальная координата y</th>
+                <td id="yHorizontal"></td>
+            </tr>
+            <tr>
+                <th>Горизонтальная координата z</th>
+                <td id="zHorizontal"></td>
+            </tr>
+            <tr>
+                <th>Азимут</th>
+                <td id="azimuth"></td>
+            </tr>
+            <tr>
+                <th>Высота</th>
+                <td id="altitude"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="Sun.js"></script>
