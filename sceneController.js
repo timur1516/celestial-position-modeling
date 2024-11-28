@@ -60,7 +60,10 @@ function displaySunAroundEarth() {
 
 function displayEarthAroundSun() {
     let p = sun.rectangularEclipticCoordinates;
-    earthSphere.position.set(p.x * 10, p.y * 10, p.z * 10)
+    let pm = moon.rectangularEquatorialCoordinates;
+    earthSphere.position.set(p.x * 10, p.y * 10, p.z * 10);
+    console.log((pm.x + p.x) * 5, (pm.y + p.y) * 5, (pm.z + p.z) * 5);
+    moonSphere.position.set((p.x*10 + pm.x*2), (p.y*10 + pm.y*2), (p.z*10 + pm.z));
     sunSphere.position.set(0, 0, 0);
 }
 
@@ -86,7 +89,7 @@ function displayEclipticOrbit() {
     scene.add(eclipticOrbit);
 }
 
-function displayHorizontalOrbit(){
+function displayHorizontalOrbit() {
     scene.remove(horizontalOrbit);
     horizontalOrbit = generateHorizontalOrbit(sun);
     scene.add(horizontalOrbit);

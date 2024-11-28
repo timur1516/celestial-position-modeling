@@ -1,4 +1,5 @@
 const sun = new Sun();
+const moon = new Moon();
 
 let eclipticOrbit = generateEclipticOrbit(sun);
 let horizontalOrbit = generateHorizontalOrbit(sun);
@@ -18,6 +19,7 @@ function animate() {
         updateScene();
         updateStatistics();
         sun.T.setSeconds((sun.T.getSeconds() + speedK));
+        moon.T.setSeconds((moon.T.getSeconds() + speedK));
     }
 
     controls.update();
@@ -28,7 +30,9 @@ animate();
 
 function toRealTime() {
     sun.T = new Date();
+    moon.T = new Date();
     sun.offset = -sun.T.getTimezoneOffset() / 60;
+    moon.offset = -moon.T.getTimezoneOffset() / 60;
     timezoneSelect.value = sun.offset.toFixed(1);
     timeSpeedRange.value = 0;
     isAnimation = false;

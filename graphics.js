@@ -36,6 +36,13 @@ const sunSphere = new THREE.Mesh(sunSphereGeometry, sunSphereMaterial);
 sunSphere.rotation.x = Math.PI / 2;
 scene.add(sunSphere);
 //----------------------------------------------------------------------------------------------------------------------------------
+const moonTexture = textureLoader.load("2k_moon.jpg");
+const moonSphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const moonSphereMaterial = new THREE.MeshBasicMaterial({map: moonTexture});
+const moonSphere = new THREE.Mesh(moonSphereGeometry, moonSphereMaterial);
+moonSphere.rotation.x = Math.PI / 2;
+scene.add(moonSphere);
+//----------------------------------------------------------------------------------------------------------------------------------
 const observerSphereGeometry = new THREE.SphereGeometry(0.05, 32, 32);
 const observerSphereMaterial = new THREE.MeshBasicMaterial({
     color: 0xff0000,
