@@ -2,7 +2,7 @@ THREE.Object3D.DefaultUp.set(0, 0, 1);
 //----------------------------------------------------------------------------------------------------------------------------------
 const textureLoader = new THREE.TextureLoader();
 //----------------------------------------------------------------------------------------------------------------------------------
-const sceneTexture = textureLoader.load("2k_stars_milky_way.jpg");
+const sceneTexture = textureLoader.load("/resources/2k_stars_milky_way.jpg");
 const scene = new THREE.Scene();
 scene.background = sceneTexture;
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -22,28 +22,25 @@ const gridHelper = new THREE.GridHelper(10, 10);
 gridHelper.rotateX(Math.PI / 2);
 scene.add(gridHelper);
 //----------------------------------------------------------------------------------------------------------------------------------
-const earthTexture = textureLoader.load("2k_earth_daymap.jpg");
+const earthTexture = textureLoader.load("/resources/2k_earth_daymap.jpg");
 const earthSphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const earthSphereMaterial = new THREE.MeshBasicMaterial({map: earthTexture});
 const earthSphere = new THREE.Mesh(earthSphereGeometry, earthSphereMaterial);
 earthSphere.rotation.x = Math.PI / 2;
-scene.add(earthSphere);
 //----------------------------------------------------------------------------------------------------------------------------------
-const sunTexture = textureLoader.load("2k_sun.jpg");
+const sunTexture = textureLoader.load("/resources/2k_sun.jpg");
 const sunSphereGeometry = new THREE.SphereGeometry(2, 32, 32);
 const sunSphereMaterial = new THREE.MeshBasicMaterial({map: sunTexture});
 const sunSphere = new THREE.Mesh(sunSphereGeometry, sunSphereMaterial);
 sunSphere.rotation.x = Math.PI / 2;
-scene.add(sunSphere);
 //----------------------------------------------------------------------------------------------------------------------------------
-const moonTexture = textureLoader.load("2k_moon.jpg");
+const moonTexture = textureLoader.load("/resources/2k_moon.jpg");
 const moonSphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
 const moonSphereMaterial = new THREE.MeshBasicMaterial({map: moonTexture});
 const moonSphere = new THREE.Mesh(moonSphereGeometry, moonSphereMaterial);
 moonSphere.rotation.x = Math.PI / 2;
-scene.add(moonSphere);
 //----------------------------------------------------------------------------------------------------------------------------------
-const observerSphereGeometry = new THREE.SphereGeometry(0.05, 32, 32);
+const observerSphereGeometry = new THREE.SphereGeometry(0.15, 32, 32);
 const observerSphereMaterial = new THREE.MeshBasicMaterial({
     color: 0xff0000,
     side: THREE.DoubleSide
@@ -67,7 +64,7 @@ function generateEclipticOrbit(sun) {
     let geometry = new THREE.BufferGeometry().setFromPoints(eclipticOrbitPoints);
     return new THREE.Line(geometry, material);
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------
 function generateHorizontalOrbit(sun) {
     let tmpSun = sun.clone();
     let horizontalOrbitPoints = [];

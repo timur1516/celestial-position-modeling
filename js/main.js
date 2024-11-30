@@ -45,10 +45,12 @@ function updateSpeedK() {
     switch (mode) {
         case viewModes.SUN_AROUND_EARTH:
             speedK = Number(timeSpeedRange.value) * ((60 * 60 * 24 * FRAME_INTERVAL) / (1000 * 400));
-
             break;
         case viewModes.EARTH_AROUND_SUN:
             speedK = Number(timeSpeedRange.value) * ((60 * 60 * 24 * 365 * FRAME_INTERVAL) / (1000 * 400));
+            break;
+        case viewModes.MOON_AROUND_EARTH:
+            speedK = Number(timeSpeedRange.value) * ((60 * 60 * 24 * 30 * FRAME_INTERVAL) / (1000 * 400));
             break;
     }
     document.getElementById("animationSpeed").textContent =

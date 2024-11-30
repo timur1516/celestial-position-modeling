@@ -16,6 +16,7 @@ class Moon {
     #M;             // Средняя аномалия Луны
     #Lm;            // Средняя долгота Луны
     #E;             // Эксцентрическая аномалия
+    #v;             // Истинная аномалия
 
     #Ms;            // Средняя аномалия Солнца
     #ws;            // Долгота перигелия Солнца
@@ -24,22 +25,32 @@ class Moon {
     #F;             // Аргумент широты Луны
     #D;             // Средняя элонгация Луны
 
-    #xInPlaneOfEcliptic;
-    #yInPlaneOfEcliptic;       // Координаты в плоскости эклиптики
     #r;             // Гелиоцентрическое расстояние
     #lon;           // Долгота в эклиптических координатах
     #lat            // Широта в эклиптических координатах
-    #distance       // Расстояние в эклиптических координатах
-    #v;             // Истинная аномалия
+
+    #GMST0          // Звездное время на гринвичском меридиане в 00:00 в часах
+    #SIDTIME        // Местное звездное время в часах
+    #HA             // Часовой угол
+
+    // Координаты в плоскости эклиптики
+    #xInPlaneOfEcliptic;
+    #yInPlaneOfEcliptic;
+
+    // Эклиптические прямоугольные координаты
     #xEcliptic;
     #yEcliptic;
-    #zEcliptic;             // Эклиптические прямоугольные координаты
+    #zEcliptic;
+
+    // Экваториальные прямоугольные координаты
     #xEquatorial;
     #yEquatorial;
-    #zEquatorial;       // Экваториальные прямоугольные координаты
+    #zEquatorial;
+
+    // Экваториальные координаты
     #rEquatorial;
     #RAEquatorial;
-    #DeclEquatorial;   // Экваториальные координаты
+    #DeclEquatorial;
 
     constructor(T = new Date(), offset = new Date().getTimezoneOffset() / 60, latitude = 0, longitude = 0) {
         this.#T = T;
@@ -52,49 +63,8 @@ class Moon {
         return new Moon(new Date(this.#T), this.#offset, this.#latitude, this.#longitude);
     }
 
-    // Приводит значение в градусах в промежуток от 0 до 360
     #rev(x, d) {
         return x - Math.floor(x / d) * d;
-    }
-
-    printData() {
-        this.#calculateEquatorialCoordinates();
-        console.log(`N = ${this.#N}`);
-        console.log(`i = ${this.#i}`);
-        console.log(`w = ${this.#w}`);
-        console.log(`a = ${this.#a}`);
-        console.log(`e = ${this.#e}`);
-        console.log(`M = ${this.#M}`);
-        console.log("-------------------------------------------");
-        console.log(`Ms = ${this.#Ms}`);
-        console.log(`Ls = ${this.#Ls}`);
-        console.log(`Lm = ${this.#Lm}`);
-        console.log(`ws = ${this.#ws}`);
-        console.log(`D = ${this.#D}`);
-        console.log(`F = ${this.#F}`);
-        console.log(`E = ${this.#E}`);
-        console.log("-------------------------------------------");
-        console.log(`x = ${this.#xInPlaneOfEcliptic}`);
-        console.log(`y = ${this.#yInPlaneOfEcliptic}`);
-        console.log("-------------------------------------------");
-        console.log(`r = ${this.#r}`);
-        console.log(`v = ${this.#v}`);
-        console.log("-------------------------------------------");
-        console.log(`xeclip = ${this.#xEcliptic}`);
-        console.log(`yeclip = ${this.#yEcliptic}`);
-        console.log(`zeclip = ${this.#zEcliptic}`);
-        console.log("-------------------------------------------");
-        console.log(`lon = ${this.#lon}`);
-        console.log(`lat = ${this.#lat}`);
-        console.log(`distance = ${this.#distance}`);
-        console.log("-------------------------------------------");
-        console.log(`xequat = ${this.#xEquatorial}`);
-        console.log(`yequat = ${this.#yEquatorial}`);
-        console.log(`zequat = ${this.#zEquatorial}`);
-        console.log("-------------------------------------------");
-        console.log(`rEquatorial = ${this.#rEquatorial}`);
-        console.log(`RA = ${this.#RAEquatorial}`);
-        console.log(`Decl = ${this.#DeclEquatorial}`);
     }
 
     #calculateTimeParams() {
@@ -141,10 +111,9 @@ class Moon {
         this.#zEcliptic = this.#r * Math.sin((this.#v + this.#w) * DEGRAD) * Math.sin(this.#i * DEGRAD);
 
         this.#lon = this.#rev(RADEG * Math.atan2(this.#yEcliptic, this.#xEcliptic), 360);
-        this.#lat = RADEG * Math.atan2(this.#zEcliptic, Math.sqrt(this.#xEcliptic * this.#xEcliptic + this.#yEcliptic * this.#yEcliptic));
+        this.#lat = this.#rev(RADEG * Math.atan2(this.#zEcliptic, Math.sqrt(this.#xEcliptic * this.#xEcliptic + this.#yEcliptic * this.#yEcliptic)), 360);
         this.#r = Math.sqrt(this.#xEcliptic * this.#xEcliptic + this.#yEcliptic * this.#yEcliptic + this.#zEcliptic * this.#zEcliptic);
 
-        // Исправления для долготы, широты и расстояния
         this.#lon += -1.274 * Math.sin(DEGRAD * (this.#M - 2 * this.#D))
             + 0.658 * Math.sin(DEGRAD * 2 * this.#D)
             - 0.186 * Math.sin(DEGRAD * this.#Ms)
@@ -164,15 +133,17 @@ class Moon {
             + 0.017 * Math.sin(DEGRAD * (2 * this.#M + this.#F));
         this.#r += -0.58 * Math.cos(DEGRAD * (this.#M - 2 * this.#D))
             - 0.46 * Math.cos(DEGRAD * 2 * this.#D);
+    }
 
+    #calculateRectangularEclipticCoordinates() {
+        this.#calculateEclipticCoordinates();
         this.#xEcliptic = this.#r * Math.cos(this.#lon * DEGRAD) * Math.cos(this.#lat * DEGRAD);
         this.#yEcliptic = this.#r * Math.sin(this.#lon * DEGRAD) * Math.cos(this.#lat * DEGRAD);
         this.#zEcliptic = this.#r * Math.sin(this.#lat * DEGRAD);
-
     }
 
     #calculateRectangularEquatorialCoordinates() {
-        this.#calculateEclipticCoordinates();
+        this.#calculateRectangularEclipticCoordinates();
         this.#xEquatorial = this.#xEcliptic;
         this.#yEquatorial = this.#yEcliptic * Math.cos(this.#oblecl * DEGRAD) - this.#zEcliptic * Math.sin(this.#oblecl * DEGRAD);
         this.#zEquatorial = this.#yEcliptic * Math.sin(this.#oblecl * DEGRAD) + this.#zEcliptic * Math.cos(this.#oblecl * DEGRAD);
@@ -180,15 +151,27 @@ class Moon {
 
     #calculateEquatorialCoordinates() {
         this.#calculateRectangularEquatorialCoordinates();
-        //вычислим прямое восхождение и склонение Солнца в градусах
         this.#rEquatorial = Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial + this.#zEquatorial * this.#zEquatorial);
         this.#RAEquatorial = this.#rev(Math.atan2(this.#yEquatorial, this.#xEquatorial) * RADEG, 360);
-        this.#DeclEquatorial = Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial)) * RADEG;
+        this.#DeclEquatorial = this.#rev(Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial)) * RADEG, 360);
     }
 
-    get rectangularEquatorialCoordinates(){
+    get rectangularEquatorialCoordinates() {
         this.#calculateEquatorialCoordinates();
-        return { x : this.#xEquatorial / this.#rEquatorial, y : this.#yEquatorial / this.#rEquatorial, z : this.#zEquatorial / this.#rEquatorial };
+        return {
+            x: this.#xEquatorial / this.#rEquatorial,
+            y: this.#yEquatorial / this.#rEquatorial,
+            z: this.#zEquatorial / this.#rEquatorial
+        };
+    }
+
+    get rectangularEclipticCoordinates() {
+        this.#calculateRectangularEclipticCoordinates();
+        return {
+            x: this.#xEcliptic / this.#r,
+            y: this.#yEcliptic / this.#r,
+            z: this.#zEcliptic / this.#r
+        };
     }
 
     get T() {

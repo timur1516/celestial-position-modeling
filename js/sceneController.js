@@ -9,6 +9,7 @@ function updateScene() {
 
             hideEclipticOrbit();
             hideEclipticOrbitData();
+            hideMoon();
             break;
         case viewModes.EARTH_AROUND_SUN:
             displayEarthAroundSun();
@@ -56,15 +57,19 @@ function displaySunAroundEarth() {
     let p = sun.rectangularHorizontalCoordinates;
     earthSphere.position.set(0, 0, 0);
     sunSphere.position.set(p.x * 10, p.y * 10, p.z * 10);
+    scene.add(sunSphere);
+    scene.add(earthSphere);
 }
 
 function displayEarthAroundSun() {
     let p = sun.rectangularEclipticCoordinates;
-    let pm = moon.rectangularEquatorialCoordinates;
+    let pm = moon.rectangularEclipticCoordinates;
     earthSphere.position.set(p.x * 10, p.y * 10, p.z * 10);
-    console.log((pm.x + p.x) * 5, (pm.y + p.y) * 5, (pm.z + p.z) * 5);
-    moonSphere.position.set((p.x*10 + pm.x*2), (p.y*10 + pm.y*2), (p.z*10 + pm.z));
+    moonSphere.position.set((p.x * 10 + pm.x * 2), (p.y * 10 + pm.y * 2), (p.z * 10 + pm.z));
     sunSphere.position.set(0, 0, 0);
+    scene.add(sunSphere);
+    scene.add(earthSphere);
+    scene.add(moonSphere);
 }
 
 function displayObserver() {
@@ -113,6 +118,10 @@ function hideOnEarthPositionChooser() {
 
 function hideObserver() {
     scene.remove(observerSphere);
+}
+
+function hideMoon() {
+    scene.remove(moonSphere);
 }
 
 function hideEclipticOrbit() {

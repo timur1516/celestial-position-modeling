@@ -4,6 +4,7 @@ const DEGRAD = (Math.PI / 180.0);
 const viewModes = Object.freeze({
     SUN_AROUND_EARTH: 0,
     EARTH_AROUND_SUN: 1,
+    MOON_AROUND_EARTH: 2
 });
 
 const FPS = 100;

@@ -15,20 +15,39 @@ class Sun {
     #L;             // Средняя долгота Солнца
     #E;             // Эксцентрическая аномалия
 
-    #xInPlaneOfEcliptic; #yInPlaneOfEcliptic;       // Координаты в плоскости эклиптики
     #r;             // Гелиоцентрическое расстояние
     #lon;           // Долгота в эклиптических координатах
     #v;             // Истинная аномалия
-    #xEcliptic; #yEcliptic; #zEcliptic;             // Эклиптические прямоугольные координаты
-    #xEquatorial; #yEquatorial; #zEquatorial;       // Экваториальные прямоугольные координаты
-    #rEquatorial; #RAEquatorial; #DeclEquatorial;   // Экваториальные координаты
 
     #GMST0          // Звездное время на гринвичском меридиане в 00:00 в часах
     #SIDTIME        // Местное звездное время в часах
     #HA             // Часовой угол
 
-    #xHorizontal; #yHorizontal;  #zHorizontal;      // Горизонтальные прямоугольные координаты
-    #azimuth; #altitude                             // Азимут и высота
+    // Координаты в плоскости эклиптики
+    #xInPlaneOfEcliptic;
+
+    #yInPlaneOfEcliptic;
+    // Эклиптические прямоугольные координаты
+    #xEcliptic;
+    #yEcliptic;
+
+    #zEcliptic;
+    // Экваториальные прямоугольные координаты
+    #xEquatorial;
+    #yEquatorial;
+
+    #zEquatorial;
+    // Экваториальные координаты
+    #rEquatorial;
+    #RAEquatorial;
+
+    #DeclEquatorial;
+
+    #xHorizontal;
+    #yHorizontal;
+    #zHorizontal;      // Горизонтальные прямоугольные координаты
+    #azimuth;
+    #altitude                             // Азимут и высота
 
     constructor(T = new Date(), offset = new Date().getTimezoneOffset() / 60, latitude = 0, longitude = 0) {
         this.#T = T;
@@ -41,18 +60,17 @@ class Sun {
         return new Sun(new Date(this.#T), this.#offset, this.#latitude, this.#longitude);
     }
 
-    // Приводит значение в градусах в промежуток от 0 до 360
     #rev(x, d) {
         return x - Math.floor(x / d) * d;
     }
 
-    #calculateTimeParams(){
+    #calculateTimeParams() {
         this.#UT = this.#T.getHours() + this.#T.getMinutes() / 60;
         this.#UT += this.#offset * -1;
         this.#d = 367 * this.#T.getFullYear() - Math.floor(7 * (this.#T.getFullYear() + Math.floor(((this.#T.getMonth() + 1) + 9) / 12)) / 4) + Math.floor((275 * (this.#T.getMonth() + 1)) / 9) + this.#T.getDate() - 730530;
     }
 
-    #calculateKeplerOrbit(){
+    #calculateKeplerOrbit() {
         this.#calculateTimeParams();
         this.#w = 282.9404 + 4.70935E-5 * this.#d;
         this.#a = 1.000000;
@@ -65,32 +83,32 @@ class Sun {
         this.#E = this.#M + RADEG * this.#e * Math.sin(this.#M * DEGRAD) * (1 + this.#e * Math.cos(this.#M * DEGRAD));
     }
 
-    #calculateRectangularEclipticCoordinates(){
+    #calculateRectangularEclipticCoordinates() {
         this.#calculateKeplerOrbit();
         this.#xInPlaneOfEcliptic = Math.cos(this.#E * DEGRAD) - this.#e;
         this.#yInPlaneOfEcliptic = Math.sin(this.#E * DEGRAD) * Math.sqrt(1 - this.#e * this.#e);
-        //Преобразовать в расстояние и истинную аномалию
+
         this.#r = Math.sqrt(this.#xInPlaneOfEcliptic * this.#xInPlaneOfEcliptic + this.#yInPlaneOfEcliptic * this.#yInPlaneOfEcliptic);
         this.#v = Math.atan2(this.#yInPlaneOfEcliptic, this.#xInPlaneOfEcliptic) * RADEG;
-        //Долгота Солнца
+
         this.#lon = this.#v + this.#w;
         this.#lon = this.#rev(this.#lon, 360.0);
-        //вычислим эклиптические прямоугольные координаты Солнца
+
         this.#xEcliptic = this.#r * Math.cos(this.#lon * DEGRAD);
         this.#yEcliptic = this.#r * Math.sin(this.#lon * DEGRAD);
         this.#zEcliptic = 0.0;
     }
 
-    #calculateRectangularEquatorialCoordinates(){
+    #calculateRectangularEquatorialCoordinates() {
         this.#calculateRectangularEclipticCoordinates();
         this.#xEquatorial = this.#xEcliptic;
         this.#yEquatorial = this.#yEcliptic * Math.cos(this.#oblecl * DEGRAD) - this.#zEcliptic * Math.sin(this.#oblecl * DEGRAD);
         this.#zEquatorial = this.#yEcliptic * Math.sin(this.#oblecl * DEGRAD) + this.#zEcliptic * Math.cos(this.#oblecl * DEGRAD);
     }
 
-    #calculateEquatorialCoordinates(){
+    #calculateEquatorialCoordinates() {
         this.#calculateRectangularEquatorialCoordinates();
-        //вычислим прямое восхождение и склонение Солнца в градусах
+
         this.#rEquatorial = Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial + this.#zEquatorial * this.#zEquatorial);
         this.#RAEquatorial = Math.atan2(this.#yEquatorial, this.#xEquatorial) * RADEG;
         this.#DeclEquatorial = Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial)) * RADEG;
@@ -98,53 +116,51 @@ class Sun {
 
     #calculateRectangularHorizontalCoordinates() {
         this.#calculateEquatorialCoordinates();
-        //Звездное время и часовой угол. Высота и азимут
+
         this.#GMST0 = this.#L / 15 + 12;
-        this.#SIDTIME = this.#GMST0 + this.#UT + this.#longitude / 15; //местное звездное время в часах
-        //вычислим часовой угол в часах
+        this.#SIDTIME = this.#GMST0 + this.#UT + this.#longitude / 15;
+
         this.#HA = this.#SIDTIME - this.#RAEquatorial / 15;
         this.#HA *= 15;
-        //преобразуем HA Солнца и Decl в прямоугольную (x, y, z) систему координат
+
         let x = Math.cos(this.#HA * DEGRAD) * Math.cos(this.#DeclEquatorial * DEGRAD);
         let y = Math.sin(this.#HA * DEGRAD) * Math.cos(this.#DeclEquatorial * DEGRAD);
         let z = Math.sin(this.#DeclEquatorial * DEGRAD);
 
-        //Теперь мы повернем эту систему x, y, z вдоль оси, идущей с востока на запад
         this.#xHorizontal = x * Math.cos((90 - this.#latitude) * DEGRAD) - z * Math.sin((90 - this.#latitude) * DEGRAD);
         this.#yHorizontal = y;
         this.#zHorizontal = x * Math.sin((90 - this.#latitude) * DEGRAD) + z * Math.cos((90 - this.#latitude) * DEGRAD);
     }
 
-    #calculateHorizontalCoordinates(){
+    #calculateHorizontalCoordinates() {
         this.#calculateRectangularHorizontalCoordinates();
-        //Вычисляем азимут и высоту в градусах
         this.#azimuth = Math.atan2(this.#yHorizontal, this.#xHorizontal) * RADEG + 180;
         this.#altitude = Math.asin(this.#zHorizontal) * RADEG;
     }
 
-    get rectangularEclipticCoordinates(){
+    get rectangularEclipticCoordinates() {
         this.#calculateRectangularEclipticCoordinates();
-        return { x : this.#xEcliptic, y : this.#yEcliptic, z : this.#zEcliptic };
+        return {x: this.#xEcliptic, y: this.#yEcliptic, z: this.#zEcliptic};
     }
 
-    get rectangularEquatorialCoordinates(){
+    get rectangularEquatorialCoordinates() {
         this.#calculateRectangularEquatorialCoordinates();
-        return { x : this.#xEquatorial, y : this.#yEquatorial, z : this.#zEquatorial };
+        return {x: this.#xEquatorial, y: this.#yEquatorial, z: this.#zEquatorial};
     }
 
-    get equatorialCoordinates(){
+    get equatorialCoordinates() {
         this.#calculateEquatorialCoordinates();
-        return {r : this.#rEquatorial, RA: this.#RAEquatorial, Decl : this.#DeclEquatorial };
+        return {r: this.#rEquatorial, RA: this.#RAEquatorial, Decl: this.#DeclEquatorial};
     }
 
-    get rectangularHorizontalCoordinates(){
+    get rectangularHorizontalCoordinates() {
         this.#calculateRectangularHorizontalCoordinates();
-        return { x : this.#xHorizontal, y : this.#yHorizontal, z : this.#zHorizontal };
+        return {x: this.#xHorizontal, y: this.#yHorizontal, z: this.#zHorizontal};
     }
 
-    get horizontalCoordinates(){
+    get horizontalCoordinates() {
         this.#calculateHorizontalCoordinates();
-        return { x : this.#xHorizontal, y : this.#yHorizontal, z : this.#zHorizontal };
+        return {x: this.#xHorizontal, y: this.#yHorizontal, z: this.#zHorizontal};
     }
 
     set T(value) {
