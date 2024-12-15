@@ -39,11 +39,11 @@ function updateStatistics() {
     document.getElementById('earth-r').textContent = formatNumber(sun.r) + ' a.е';
 
     moon.rectangularEclipticCoordinates;
-    document.getElementById('moon-x-ecliptic').textContent = formatNumber(moon.xEcliptic) + ' a.е';
-    document.getElementById('moon-y-ecliptic').textContent = formatNumber(moon.yEcliptic) + ' a.е';
-    document.getElementById('moon-z-ecliptic').textContent = formatNumber(moon.zEcliptic) + ' a.е';
+    document.getElementById('moon-x-ecliptic').textContent = formatNumber(moon.xEcliptic) + ' км';
+    document.getElementById('moon-y-ecliptic').textContent = formatNumber(moon.yEcliptic) + ' км';
+    document.getElementById('moon-z-ecliptic').textContent = formatNumber(moon.zEcliptic) + ' км';
     document.getElementById('moon-true-anomaly').textContent = formatNumber(moon.v) + ' рад';
-    document.getElementById('moon-r').textContent = formatNumber(moon.r) + ' a.е';
+    document.getElementById('moon-r').textContent = formatNumber(moon.r) + ' км';
 
     sun.rectangularHorizontalCoordinates;
     document.getElementById('sun-true-anomaly').textContent = formatNumber(sun.v) + ' рад';
