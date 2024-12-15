@@ -1,5 +1,5 @@
 function formatNumber(value) {
-    return value !== undefined ? value.toFixed(2) : "N/A";
+    return value !== undefined ? value.toFixed(4) : "N/A";
 }
 
 function formatTime(seconds) {

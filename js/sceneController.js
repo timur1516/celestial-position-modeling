@@ -3,21 +3,23 @@ function updateScene() {
         case viewModes.SUN_AROUND_EARTH:
             displaySunAroundEarth();
             displayHorizontalOrbit();
-            displayHorizontalOrbitData();
+            displaySunOrbitData();
             displayOnEarthPositionChooser();
             displayObserver();
 
             hideEclipticOrbit();
-            hideEclipticOrbitData();
+            hideEarthOrbitData();
             hideMoon();
+            hideMoonOrbitData();
             break;
         case viewModes.EARTH_AROUND_SUN:
             displayEarthAroundSun();
             displayEclipticOrbit();
-            displayEclipticOrbitData();
+            displayEarthOrbitData();
+            displayMoonOrbitData();
 
             hideHorizontalOrbit();
-            hideHorizontalOrbitData();
+            hideSunOrbitData();
             hideOnEarthPositionChooser();
             hideObserver();
             break;
@@ -30,27 +32,26 @@ function updateStatistics() {
     document.getElementById("month").textContent = sun.T.toLocaleString('default', {month: 'short'}).replace('.', '').toUpperCase();
     document.getElementById("time").textContent = sun.T.toLocaleString().slice(12, 17);
 
-    document.getElementById('days').textContent = formatNumber(sun.d);
-    document.getElementById('longitude').textContent = formatNumber(sun.w);
-    document.getElementById('distance').textContent = formatNumber(sun.a);
-    document.getElementById('eccentricity').textContent = formatNumber(sun.e);
-    document.getElementById('meanAnomaly').textContent = formatNumber(sun.M);
-    document.getElementById('inclination').textContent = formatNumber(sun.oblecl);
-    document.getElementById('meanLongitude').textContent = formatNumber(sun.L);
-    document.getElementById('eccentricAnomaly').textContent = formatNumber(sun.E);
+    document.getElementById('earth-x-ecliptic').textContent = formatNumber(sun.xEcliptic) + ' a.е';
+    document.getElementById('earth-y-ecliptic').textContent = formatNumber(sun.yEcliptic) + ' a.е';
+    document.getElementById('earth-z-ecliptic').textContent = formatNumber(sun.zEcliptic) + ' a.е';
+    document.getElementById('earth-true-anomaly').textContent = formatNumber(sun.v) + ' рад';
+    document.getElementById('earth-r').textContent = formatNumber(sun.r) + ' a.е';
 
-    document.getElementById('xInPlaneOfEcliptic').textContent = formatNumber(sun.xInPlaneOfEcliptic);
-    document.getElementById('yInPlaneOfEcliptic').textContent = formatNumber(sun.yInPlaneOfEcliptic);
-    document.getElementById('helioDistance').textContent = formatNumber(sun.r);
-    document.getElementById('eclipticLongitude').textContent = formatNumber(sun.lon);
-    document.getElementById('trueAnomaly').textContent = formatNumber(sun.v);
+    moon.rectangularEclipticCoordinates;
+    document.getElementById('moon-x-ecliptic').textContent = formatNumber(moon.xEcliptic) + ' a.е';
+    document.getElementById('moon-y-ecliptic').textContent = formatNumber(moon.yEcliptic) + ' a.е';
+    document.getElementById('moon-z-ecliptic').textContent = formatNumber(moon.zEcliptic) + ' a.е';
+    document.getElementById('moon-true-anomaly').textContent = formatNumber(moon.v) + ' рад';
+    document.getElementById('moon-r').textContent = formatNumber(moon.r) + ' a.е';
 
-    sun.horizontalCoordinates;
-    document.getElementById('xHorizontal').textContent = formatNumber(sun.xHorizontal);
-    document.getElementById('yHorizontal').textContent = formatNumber(sun.yHorizontal);
-    document.getElementById('zHorizontal').textContent = formatNumber(sun.zHorizontal);
-    document.getElementById('azimuth').textContent = formatNumber(sun.azimuth);
-    document.getElementById('altitude').textContent = formatNumber(sun.altitude);
+    sun.rectangularHorizontalCoordinates;
+    document.getElementById('sun-true-anomaly').textContent = formatNumber(sun.v) + ' рад';
+    document.getElementById('sun-r').textContent = formatNumber(sun.r) + ' a.е';
+    document.getElementById('sun-ra').textContent = formatNumber(sun.RA) + ' рад';
+    document.getElementById('sun-decl').textContent = formatNumber(sun.Decl) + ' рад';
+    document.getElementById('sun-azimuth').textContent = formatNumber(sun.azimuth) + ' рад';
+    document.getElementById('sun-altitude').textContent = formatNumber(sun.altitude) + ' рад';
 }
 
 function displaySunAroundEarth() {
@@ -80,12 +81,20 @@ function displayObserver() {
     observerSphere.position.set(x, y, z);
 }
 
-function displayHorizontalOrbitData() {
-    document.querySelector('.horizontalOrbitData').style.display = 'flex';
+function displaySunOrbitData() {
+    document.getElementById('sun-orbit-data').style.display = 'flex';
 }
 
-function displayEclipticOrbitData() {
-    document.querySelector('.eclipticOrbitData').style.display = 'flex';
+function displayMoonOrbitData() {
+    document.getElementById('moon-orbit-data').style.display = 'flex';
+}
+
+function hideMoonOrbitData() {
+    document.getElementById('moon-orbit-data').style.display = 'none';
+}
+
+function displayEarthOrbitData() {
+    document.getElementById('earth-orbit-data').style.display = 'flex';
 }
 
 function displayEclipticOrbit() {
@@ -104,12 +113,12 @@ function displayOnEarthPositionChooser() {
     document.querySelector('.positionChooser').style.display = 'flex';
 }
 
-function hideEclipticOrbitData() {
-    document.querySelector('.eclipticOrbitData').style.display = 'none';
+function hideEarthOrbitData() {
+    document.getElementById('earth-orbit-data').style.display = 'none';
 }
 
-function hideHorizontalOrbitData() {
-    document.querySelector('.horizontalOrbitData').style.display = 'none';
+function hideSunOrbitData() {
+    document.getElementById('sun-orbit-data').style.display = 'none';
 }
 
 function hideOnEarthPositionChooser() {

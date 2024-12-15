@@ -61,7 +61,7 @@ body {
     border-radius: 5px;
 }
 
-.orbitData {
+.orbit-data-container {
     position: absolute;
     right: 10px;
     margin: 10px;
@@ -71,23 +71,34 @@ body {
     gap: 5px;
 }
 
-.orbitData div {
+.orbit-data-block {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
 }
 
-table {
-    border-collapse: collapse;
+select {
+    background: black;
+    color: inherit;
+    font: inherit;
+}
+
+span{
     text-align: center;
 }
 
-.orbitData > div, .menuPanel {
+.orbit-data-table {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
+
+.orbit-data-block, .menuPanel {
     opacity: 0.2;
     transition: 0.5s ease;
 }
-.orbitData > div:hover, .menuPanel:hover {
+.orbit-data-block:hover, .menuPanel:hover {
     opacity: 1;
 }
 
@@ -96,17 +107,13 @@ td, th {
     border: 1px solid white;
 }
 
-td {
-    width: 80px;
-}
-
 .menuPanel {
     position: absolute;
     margin: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 250px;
+    width: 350px;
 }
 
 select{

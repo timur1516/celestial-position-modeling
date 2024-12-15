@@ -41,8 +41,8 @@ class Sun {
 
     // Экваториальные координаты
     #rEquatorial;
-    #RAEquatorial;
-    #DeclEquatorial;
+    #RA;
+    #Decl;
 
     // Горизонтальные прямоугольные координаты
     #xHorizontal;
@@ -122,8 +122,8 @@ class Sun {
         this.#zEquatorial = this.#yEcliptic * Math.sin(this.#oblecl) + this.#zEcliptic * Math.cos(this.#oblecl);
 
         this.#rEquatorial = Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial + this.#zEquatorial * this.#zEquatorial);
-        this.#RAEquatorial = Math.atan2(this.#yEquatorial, this.#xEquatorial);
-        this.#DeclEquatorial = Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial));
+        this.#RA = Math.atan2(this.#yEquatorial, this.#xEquatorial);
+        this.#Decl = Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial));
     }
 
     #calculateHorizontalCoordinates() {
@@ -132,12 +132,12 @@ class Sun {
         this.#GMST0 = this.#L * RADEG / 15 + 12;
         this.#SIDTIME = this.#GMST0 + this.#UT + this.#longitude / 15;
 
-        this.#HA = this.#SIDTIME - this.#RAEquatorial * RADEG / 15;
+        this.#HA = this.#SIDTIME - this.#RA * RADEG / 15;
         this.#HA *= 15;
 
-        let x = Math.cos(this.#HA * DEGRAD) * Math.cos(this.#DeclEquatorial);
-        let y = Math.sin(this.#HA * DEGRAD) * Math.cos(this.#DeclEquatorial);
-        let z = Math.sin(this.#DeclEquatorial);
+        let x = Math.cos(this.#HA * DEGRAD) * Math.cos(this.#Decl);
+        let y = Math.sin(this.#HA * DEGRAD) * Math.cos(this.#Decl);
+        let z = Math.sin(this.#Decl);
 
         this.#xHorizontal = x * Math.cos((90 - this.#latitude) * DEGRAD) - z * Math.sin((90 - this.#latitude) * DEGRAD);
         this.#yHorizontal = y;
@@ -145,7 +145,6 @@ class Sun {
 
         this.#azimuth = Math.atan2(this.#yHorizontal, this.#xHorizontal) + PI;
         this.#altitude = Math.asin(this.#zHorizontal);
-        console.log(this.#azimuth, this.#altitude);
     }
 
     get rectangularEclipticCoordinates() {
@@ -188,5 +187,40 @@ class Sun {
 
     get longitude() {
         return this.#longitude;
+    }
+
+    get r() {
+        return this.#r / this.#AU;
+    }
+
+    get v() {
+        return this.#v;
+    }
+
+    get xEcliptic() {
+        return this.#xEcliptic / this.#AU;
+    }
+
+    get yEcliptic() {
+        return this.#yEcliptic / this.#AU;
+    }
+
+    get zEcliptic() {
+        return this.#zEcliptic / this.#AU;
+    }
+    get RA() {
+        return this.#RA;
+    }
+
+    get Decl() {
+        return this.#Decl;
+    }
+
+    get azimuth() {
+        return this.#azimuth;
+    }
+
+    get altitude() {
+        return this.#altitude;
     }
 }

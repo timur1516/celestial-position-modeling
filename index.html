@@ -12,11 +12,11 @@
         <h3>Режим</h3>
         <div>
             <input type="radio" name="modeRadio" id="sunAroundEarthMode" value="0" checked/>
-            <label for="sunAroundEarthMode">Солнце вокруг Земли</label>
+            <label for="sunAroundEarthMode">Суточное движение Солнца</label>
         </div>
         <div>
             <input type="radio" name="modeRadio" id="earthAroundSun" value="1"/>
-            <label for="earthAroundSun">Земля вокруг Солнца</label>
+            <label for="earthAroundSun">Движение Земли и Луны вокруг Солнца</label>
         </div>
     </div>
     <div class="positionChooser">
@@ -88,101 +88,94 @@
         <input type="range" min="-400" max="400" step="1" value="0" id="speedRange"/>
     </div>
 </div>
-<div class="orbitData">
-    <div class="keplerOrbitData">
-        <h3>Кеплеровы элементы орбиты</h3>
-        <table id="keplerOrbitDataTable">
+<div class="orbit-data-container">
+    <div class="orbit-data-block" id="earth-orbit-data">
+        <h3>Характеристики движения Земли</h3>
+        <table class="orbit-data-table">
             <tbody>
             <tr>
-                <th>Дней с 00:00 TDT января 2000 года (d)</th>
-                <td id="days"></td>
+                <th>\( \vartheta \)</th>
+                <td id="earth-true-anomaly"></td>
             </tr>
             <tr>
-                <th>Долгота перигелия (w)</th>
-                <td id="longitude"></td>
+                <th>\( r \)</th>
+                <td id="earth-r"></td>
             </tr>
             <tr>
-                <th>Среднее расстояние, а.е. (a)</th>
-                <td id="distance"></td>
+                <th>\( x_{эклип} \)</th>
+                <td id="earth-x-ecliptic"></td>
             </tr>
             <tr>
-                <th>Эксцентриситет (e)</th>
-                <td id="eccentricity"></td>
+                <th>\( y_{эклип} \)</th>
+                <td id="earth-y-ecliptic"></td>
             </tr>
             <tr>
-                <th>Средняя аномалия (M)</th>
-                <td id="meanAnomaly"></td>
-            </tr>
-            <tr>
-                <th>Наклон эклиптики (oblecl)</th>
-                <td id="inclination"></td>
-            </tr>
-            <tr>
-                <th>Средняя долгота Солнца (L)</th>
-                <td id="meanLongitude"></td>
-            </tr>
-            <tr>
-                <th>Эксцентрическая аномалия (E)</th>
-                <td id="eccentricAnomaly"></td>
+                <th>\( z_{эклип} \)</th>
+                <td id="earth-z-ecliptic"></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="eclipticOrbitData">
-        <h3>Эклиптические элементы орбиты</h3>
-        <table id="eclipticOrbitDataTable">
+    <div class="orbit-data-block" id="moon-orbit-data">
+        <h3>Характеристики движения Луны</h3>
+        <table class="orbit-data-table">
             <tbody>
             <tr>
-                <th>Координата x в плоскости эклиптики</th>
-                <td id="xInPlaneOfEcliptic"></td>
+                <th>\( \vartheta \)</th>
+                <td id="moon-true-anomaly"></td>
             </tr>
             <tr>
-                <th>Координата y в плоскости эклиптики</th>
-                <td id="yInPlaneOfEcliptic"></td>
+                <th>\( r \)</th>
+                <td id="moon-r"></td>
             </tr>
             <tr>
-                <th>Гелиоцентрическое расстояние</th>
-                <td id="helioDistance"></td>
+                <th>\( x_{эклип} \)</th>
+                <td id="moon-x-ecliptic"></td>
             </tr>
             <tr>
-                <th>Долгота в эклиптических координатах</th>
-                <td id="eclipticLongitude"></td>
+                <th>\( y_{эклип} \)</th>
+                <td id="moon-y-ecliptic"></td>
             </tr>
             <tr>
-                <th>Истинная аномалия (v)</th>
-                <td id="trueAnomaly"></td>
+                <th>\( z_{эклип} \)</th>
+                <td id="moon-z-ecliptic"></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="horizontalOrbitData">
-        <h3>Горизонтальные элементы орбиты</h3>
-        <table id="horizontalOrbitDataTable">
+    <div class="orbit-data-block" id="sun-orbit-data">
+        <h3>Характеристики движения Солнца</h3>
+        <table class="orbit-data-table">
             <tbody>
             <tr>
-                <th>Горизонтальная координата x</th>
-                <td id="xHorizontal"></td>
+                <th>\( \vartheta \)</th>
+                <td id="sun-true-anomaly"></td>
             </tr>
             <tr>
-                <th>Горизонтальная координата y</th>
-                <td id="yHorizontal"></td>
+                <th>\( r \)</th>
+                <td id="sun-r"></td>
             </tr>
             <tr>
-                <th>Горизонтальная координата z</th>
-                <td id="zHorizontal"></td>
+                <th>\( \alpha \)</th>
+                <td id="sun-ra"></td>
             </tr>
             <tr>
-                <th>Азимут</th>
-                <td id="azimuth"></td>
+                <th>\( \delta \)</th>
+                <td id="sun-decl"></td>
             </tr>
             <tr>
-                <th>Высота</th>
-                <td id="altitude"></td>
+                <th>\( A \)</th>
+                <td id="sun-azimuth"></td>
+            </tr>
+            <tr>
+                <th>\( h \)</th>
+                <td id="sun-altitude"></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="js/constants.js"></script>
@@ -193,5 +186,6 @@
 <script src="js/sceneController.js"></script>
 <script src="js/main.js"></script>
 <script src="js/listeners.js"></script>
+<script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>

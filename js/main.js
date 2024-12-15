@@ -32,7 +32,6 @@ function toRealTime() {
     sun.T = new Date();
     moon.T = new Date();
     sun.offset = -sun.T.getTimezoneOffset() / 60;
-    moon.offset = -moon.T.getTimezoneOffset() / 60;
     timezoneSelect.value = sun.offset.toFixed(1);
     timeSpeedRange.value = 0;
     isAnimation = false;

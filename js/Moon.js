@@ -74,7 +74,7 @@ class Moon {
         this.#N = this.#rev(125.1228 - 0.0529538083 * this.#d, 360);
         this.#i = 5.1454;
         this.#w = this.#rev(318.0634 + 0.1643573223 * this.#d, 360);
-        this.#a = 60.2666;
+        this.#a = 384400000;
         this.#e = 0.054900;
         this.#M = this.#rev(115.3654 + 13.0649929509 * this.#d, 360);
         this.#oblecl = 23.4393 - 3.563E-7 * this.#d;
@@ -150,8 +150,6 @@ class Moon {
         this.#rEquatorial = Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial + this.#zEquatorial * this.#zEquatorial);
         this.#RAEquatorial = this.#rev(Math.atan2(this.#yEquatorial, this.#xEquatorial) * RADEG, 360);
         this.#DeclEquatorial = this.#rev(Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial)) * RADEG, 360);
-        console.log(`RA = ${this.#RAEquatorial}`)
-        console.log(`Decl = ${this.#DeclEquatorial}`)
     }
 
     get rectangularEquatorialCoordinates() {
@@ -178,5 +176,25 @@ class Moon {
 
     set T(value) {
         this.#T = value;
+    }
+
+    get v() {
+        return this.#v * DEGRAD;
+    }
+
+    get r() {
+        return this.#r / 1000;
+    }
+
+    get xEcliptic() {
+        return this.#xEcliptic / 1000;
+    }
+
+    get yEcliptic() {
+        return this.#yEcliptic / 1000;
+    }
+
+    get zEcliptic() {
+        return this.#zEcliptic / 1000;
     }
 }
