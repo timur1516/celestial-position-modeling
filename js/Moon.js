@@ -29,10 +29,6 @@ class Moon {
     #lon;           // Долгота в эклиптических координатах
     #lat            // Широта в эклиптических координатах
 
-    #GMST0          // Звездное время на гринвичском меридиане в 00:00 в часах
-    #SIDTIME        // Местное звездное время в часах
-    #HA             // Часовой угол
-
     // Координаты в плоскости эклиптики
     #xInPlaneOfEcliptic;
     #yInPlaneOfEcliptic;
@@ -154,6 +150,8 @@ class Moon {
         this.#rEquatorial = Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial + this.#zEquatorial * this.#zEquatorial);
         this.#RAEquatorial = this.#rev(Math.atan2(this.#yEquatorial, this.#xEquatorial) * RADEG, 360);
         this.#DeclEquatorial = this.#rev(Math.atan2(this.#zEquatorial, Math.sqrt(this.#xEquatorial * this.#xEquatorial + this.#yEquatorial * this.#yEquatorial)) * RADEG, 360);
+        console.log(`RA = ${this.#RAEquatorial}`)
+        console.log(`Decl = ${this.#DeclEquatorial}`)
     }
 
     get rectangularEquatorialCoordinates() {
