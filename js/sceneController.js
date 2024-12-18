@@ -30,7 +30,7 @@ function updateStatistics() {
     document.getElementById("year").textContent = sun.T.getFullYear();
     document.getElementById("day").textContent = sun.T.getDate();
     document.getElementById("month").textContent = sun.T.toLocaleString('default', {month: 'short'}).replace('.', '').toUpperCase();
-    document.getElementById("time").textContent = sun.T.toLocaleString().slice(12, 17);
+    document.getElementById("time").textContent = `${sun.T.getHours()}:${sun.T.getMinutes()}`;
 
     document.getElementById('earth-x-ecliptic').textContent = formatNumber(sun.xEcliptic) + ' a.е';
     document.getElementById('earth-y-ecliptic').textContent = formatNumber(sun.yEcliptic) + ' a.е';
