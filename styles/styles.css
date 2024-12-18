@@ -31,7 +31,7 @@ body {
     font-size: 16px;
 }
 
-.speedControl {
+.main-control-panel-container {
     position: fixed;
     bottom: 0;
     margin: 10px;
@@ -42,22 +42,22 @@ body {
     gap: 10px;
 }
 
-.speedControl div {
+.main-control-panel-container div {
     display: flex;
     align-items: center;
     justify-content: center
 }
 
-.animationSpeedBlock {
+.animation-speed-container {
     font-size: 1.5rem;
 }
 
-.mainControl {
+.control-panel-container {
     gap: 5px;
     margin: 10px;
 }
 
-.mainControl input[type="button"] {
+.control-panel-container input[type="button"] {
     font: inherit;
     padding: 5px;
     border-radius: 5px;
@@ -66,11 +66,11 @@ body {
     color: white;
 }
 
-.mainControl input[type="button"]:hover {
+.control-panel-container input[type="button"]:hover {
     background-color: #2041c8;
 }
 
-.mainControl input[type="button"]:active {
+.control-panel-container input[type="button"]:active {
     transform: scale(0.95);
 }
 
@@ -98,7 +98,7 @@ select {
     font: inherit;
 }
 
-span{
+span {
     text-align: center;
 }
 
@@ -112,6 +112,7 @@ span{
     opacity: 0.2;
     transition: 0.5s ease;
 }
+
 .orbit-data-block:hover, .menuPanel:hover {
     opacity: 1;
 }
@@ -130,7 +131,7 @@ td, th {
     width: 350px;
 }
 
-select{
+select {
     width: 100%;
 }
 
@@ -141,7 +142,7 @@ select{
     gap: 5px;
 }
 
-.realTime {
+.real-time-container {
     gap: 5px;
 }
 
@@ -179,8 +180,28 @@ select{
     color: #00aaff;
 }
 
-@media (max-width: 700px) {
-    .orbit-data-container{
+@media (max-width: 600px) {
+    .orbit-data-container {
         display: none;
+    }
+
+    .main-control-panel-container {
+        grid-template-columns: 1fr;
+
+        .real-time-container {
+            order: 0;
+        }
+
+        .control-panel-container {
+            order: 1;
+        }
+
+        .animation-speed-container {
+            order: 2;
+        }
+
+        .speed-range-container {
+            order: 3;
+        }
     }
 }
